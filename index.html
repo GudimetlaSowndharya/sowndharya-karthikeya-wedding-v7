@@ -48,6 +48,32 @@ h2{font-size:clamp(2.8rem,7vw,4.2rem);color:var(--wine);font-weight:500;text-ali
 @media(max-width:520px){.site-nav{font-size:.68rem;padding:12px 10px;gap:7px}.site-nav .navlinks{gap:9px}#welcome{padding:12px 13px 35px}.date-on-art{top:23.4%;font-size:clamp(.77rem,3.15vw,.98rem)}.reading-area{top:30.2%;left:4%;right:4%}.sloka{font-size:clamp(.7rem,2.9vw,.94rem);line-height:1.17}.sloka p{margin-bottom:.28em}.blessing-line{font-size:clamp(.76rem,3vw,1rem);margin-top:3%}.couple-title{font-size:clamp(1.82rem,7.5vw,2.7rem);margin-top:4.2%}.hero-countdown .count-label{font-size:.73rem}.countdown strong{font-size:1.6rem}}
 @media(max-width:370px){.site-nav{font-size:.61rem}.site-nav .navlinks{gap:6px}}
 @media(prefers-reduced-motion:reduce){.step,.sloka-line,.reveal{transition:none}.reveal{opacity:1;transform:none}}
+
+/* v23: keep the approved watercolor perfectly aligned, without a separate zooming video layer. */
+.art-stage>.fallback-art{width:100%;height:100%;object-fit:fill;filter:saturate(1.16) contrast(1.10) brightness(1.065)}
+.art-stage>video{display:none!important}
+.art-stage .text-layer{inset:0;background:transparent!important;border:none!important;box-shadow:none!important;backdrop-filter:none!important}
+.date-on-art{top:23.6%;left:4%;right:4%;font-size:clamp(.9rem,2.7vw,1.36rem);font-weight:700;line-height:1.3}
+.reading-area{top:30.2%;left:5%;right:5%;width:auto}
+.sloka{font-size:clamp(.89rem,2.72vw,1.48rem);line-height:1.24;font-weight:600}
+.sloka p{margin:0 0 .5em}
+.blessing-line{position:absolute;top:48.4%;left:8%;right:8%;margin:0 auto;max-width:none;font-size:clamp(1.02rem,3vw,1.67rem);line-height:1.25;font-weight:500}
+.blessing-line strong{font-weight:600}
+.couple-title{position:absolute;left:3%;right:3%;top:63.7%;margin:0 auto;font-size:clamp(2.35rem,7.1vw,4.9rem);line-height:.96}
+@media(max-width:520px){
+ #welcome{padding:12px 13px 35px}
+ .date-on-art{top:23.0%;font-size:clamp(.82rem,3.15vw,1.06rem);letter-spacing:.045em}
+ .reading-area{top:29.4%;left:4%;right:4%}
+ .sloka{font-size:clamp(.79rem,3.23vw,.99rem);line-height:1.23}
+ .sloka p{margin-bottom:.40em}
+ .blessing-line{top:48.6%;left:6%;right:6%;font-size:clamp(.88rem,3.55vw,1.12rem);line-height:1.18;font-weight:500}
+ .couple-title{top:68.4%;left:2%;right:2%;font-size:clamp(2.05rem,7.45vw,2.75rem);line-height:.95}
+}
+@media(max-width:380px){
+ .sloka{font-size:clamp(.73rem,3.14vw,.9rem)}
+ .blessing-line{top:50.1%;font-size:clamp(.81rem,3.44vw,1rem)}
+ .couple-title{top:69.2%}
+}
 </style></head><body>
 <div id="entrance" role="dialog" aria-label="Temple entrance"><video id="entranceFilm" muted playsinline preload="auto" poster="assets/entrance-poster.jpg"><source src="assets/temple-entrance-film.mp4" type="video/mp4"></video><div class="film-shade"></div><button id="doorTap" aria-label="Open the temple doors and view the wedding invitation"></button></div>
 <nav class="site-nav"><strong>S &amp; K · 19 DEC 2026</strong><div class="navlinks"><a href="#welcome">Welcome</a><a href="#details">Timeline</a><a href="#stays">Stays</a><a href="#rsvp">RSVP</a></div></nav><main>
@@ -60,8 +86,8 @@ h2{font-size:clamp(2.8rem,7vw,4.2rem);color:var(--wine);font-weight:500;text-ali
 <script src="config.js"></script><script>
 (()=>{
 const entrance=document.getElementById('entrance'),tap=document.getElementById('doorTap'),film=document.getElementById('entranceFilm'),stage=document.getElementById('artStage'),ambient=document.getElementById('welcomeFilm');let entered=false;document.body.style.overflow='hidden';
-function welcome(){if(entrance.classList.contains('complete'))return;entrance.classList.add('complete');document.body.style.overflow='';window.scrollTo(0,0);stage.classList.add('start');const timings=[['countLabel',100],['countdown',180],['date',550],['blessingLine',4100],['coupleTitle',5000],['scrollLink',6400]];timings.forEach(([id,delay])=>setTimeout(()=>document.getElementById(id)?.classList.add('show'),delay));document.querySelectorAll('.sloka-line').forEach((line,i)=>setTimeout(()=>line.classList.add('show'),1250+i*610));ambient.play().catch(()=>{});}
-function openTemple(){if(entered)return;entered=true;tap.disabled=true;entrance.classList.add('entering');film.currentTime=0;const result=film.play();if(result&&result.catch)result.catch(()=>welcome());setTimeout(welcome,5400)}
+function welcome(){if(entrance.classList.contains('complete'))return;entrance.classList.add('complete');document.body.style.overflow='';window.scrollTo(0,0);stage.classList.add('start');const timings=[['countLabel',100],['countdown',180],['date',550],['blessingLine',4100],['coupleTitle',5000],['scrollLink',6400]];timings.forEach(([id,delay])=>setTimeout(()=>document.getElementById(id)?.classList.add('show'),delay));document.querySelectorAll('.sloka-line').forEach((line,i)=>setTimeout(()=>line.classList.add('show'),1250+i*610));/* Approved background remains fixed for precise text alignment. */}
+function openTemple(){if(entered)return;entered=true;tap.disabled=true;entrance.classList.add('entering');film.currentTime=0;const result=film.play();if(result&&result.catch)result.catch(()=>welcome());setTimeout(welcome,5300)}
 tap.addEventListener('click',openTemple);film.addEventListener('ended',welcome);film.addEventListener('error',()=>{if(entered)welcome()});
 const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');ob.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
 const target=new Date('2026-12-19T06:00:00-05:00').getTime();function tick(){const diff=Math.max(0,target-Date.now());for(const [id,n] of [['days',Math.floor(diff/86400000)],['hours',Math.floor(diff/3600000)%24],['minutes',Math.floor(diff/60000)%60],['seconds',Math.floor(diff/1000)%60]])document.getElementById(id).textContent=String(n).padStart(2,'0')}tick();setInterval(tick,1000);
